@@ -1,8 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
@@ -16,7 +15,7 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public async Task<ResultDto> Handle(UnregisterCommand request, CancellationToken cancellationToken)
+        public Task<ResultDto> Handle(UnregisterCommand request, CancellationToken cancellationToken)
         {
             Student student = _studentRepository.GetById(request.Id);
             if (student == null)
@@ -24,7 +23,7 @@ namespace University_CQRS.Handlers
 
             _studentRepository.Delete(student);
 
-            return new ResultDto(request.Id, true);
+            return Task.FromResult(new ResultDto(request.Id, true));
         }
     }
 }

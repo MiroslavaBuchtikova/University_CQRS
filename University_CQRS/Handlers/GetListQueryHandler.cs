@@ -1,7 +1,6 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
 using University_CQRS.Mapping;
 using University_CQRS.Persistance.Repositories;
 

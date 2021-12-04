@@ -1,8 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
@@ -30,9 +29,9 @@ namespace University_CQRS.Handlers
                 throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
 
             student.RemoveEnrollment(enrollment, request.Comment);
-            _studentRepository.Save(student);
+             _studentRepository.Save(student);
 
-            return new ResultDto(request.Id, true);
+            return new ResultDto(student.Id, true);
         }
     }
 }

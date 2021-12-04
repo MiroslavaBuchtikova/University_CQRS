@@ -1,8 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
@@ -26,8 +25,8 @@ namespace University_CQRS.Handlers
             student.Name = request.Name;
             student.Email = request.Email;
 
-            _studentRepository.Save(student);
-            return new ResultDto(request.Id, true);
+             _studentRepository.Save(student);
+            return new ResultDto(student.Id, true);
         }
     }
 }

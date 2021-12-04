@@ -1,8 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
@@ -12,7 +11,8 @@ namespace University_CQRS.Handlers
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
 
-        public EnrollCommandHandler(StudentRepository studentRepository, CourseRepository courseRepository)
+        public EnrollCommandHandler(StudentRepository studentRepository,
+            CourseRepository courseRepository)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
@@ -20,10 +20,9 @@ namespace University_CQRS.Handlers
 
         public async Task<ResultDto> Handle(EnrollCommand request, CancellationToken cancellationToken)
         {
-      
             Student student = _studentRepository.GetById(request.Id);
             if (student == null)
-                throw new Exception($"No student found with Id '{request.Id}'");
+                throw new Exception($"No student found with Id {request.Id}");
 
             Course course = _courseRepository.GetByName(request.Course);
             if (course == null)
@@ -33,11 +32,10 @@ namespace University_CQRS.Handlers
             if (!success)
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
-
             student.Enroll(course, grade);
-            _studentRepository.Save(student);
+             _studentRepository.Save(student);
 
-            return new ResultDto(request.Id, true);
+            return new ResultDto(student.Id, true);
         }
     }
 }

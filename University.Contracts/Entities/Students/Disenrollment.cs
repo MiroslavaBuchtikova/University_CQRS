@@ -1,5 +1,4 @@
-﻿
-namespace University_CQRS.Persistance.Entities.Students
+﻿namespace University_CQRS.Contracts.Entities.Students
 {
     public class Disenrollment : EntityBase
     {

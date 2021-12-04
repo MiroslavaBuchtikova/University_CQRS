@@ -1,6 +1,4 @@
-
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 
 namespace University_CQRS.Mapping
 {
@@ -32,7 +30,7 @@ namespace University_CQRS.Mapping
             return studentDto;
         }
 
-        public static List<StudentDto> Map(this IEnumerable<Student> students)
+        public static List<StudentDto> Map(this IReadOnlyList<Student> students)
         {
             return students.Select(a => a.Map()).ToList();
         }

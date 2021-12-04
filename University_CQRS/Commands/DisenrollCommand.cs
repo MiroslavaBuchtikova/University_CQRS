@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using University_CQRS.Dtos;
 
 namespace University_CQRS.Commands
 {

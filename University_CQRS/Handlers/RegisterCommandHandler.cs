@@ -1,8 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Dtos;
-using University_CQRS.Persistance.Entities.Students;
+using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
@@ -11,7 +10,9 @@ namespace University_CQRS.Handlers
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
-        public RegisterCommandHandler(StudentRepository studentRepository, CourseRepository courseRepository)
+
+        public RegisterCommandHandler(StudentRepository studentRepository,
+            CourseRepository courseRepository)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
@@ -19,7 +20,7 @@ namespace University_CQRS.Handlers
 
         public async Task<ResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-              var student = new Student(request.Name, request.Email);
+            var student = new Student(request.Name, request.Email);
 
             if (request.Course1 != null && request.Course1Grade != null)
             {

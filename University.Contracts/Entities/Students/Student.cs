@@ -1,4 +1,4 @@
-﻿namespace University_CQRS.Persistance.Entities.Students
+﻿namespace University_CQRS.Contracts.Entities.Students
 {
     public class Student : EntityBase
     {
@@ -30,6 +30,7 @@
         public virtual void RemoveEnrollment(Enrollment enrollment, string comment)
         {
             Enrollments.Remove(enrollment);
+            AddDisenrollmentComment(enrollment, comment);
         }
 
         public virtual void AddDisenrollmentComment(Enrollment enrollment, string comment)

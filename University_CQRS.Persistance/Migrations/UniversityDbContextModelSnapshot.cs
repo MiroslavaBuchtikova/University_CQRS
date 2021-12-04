@@ -22,7 +22,7 @@ namespace University_CQRS.Persistance.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Course", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Course", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ namespace University_CQRS.Persistance.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Disenrollment", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Disenrollment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace University_CQRS.Persistance.Migrations
                     b.ToTable("Disenrollments");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Enrollment", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Enrollment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace University_CQRS.Persistance.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Student", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Student", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,13 +115,13 @@ namespace University_CQRS.Persistance.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Disenrollment", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Disenrollment", b =>
                 {
-                    b.HasOne("University_CQRS.Persistance.Entities.Students.Course", "Course")
+                    b.HasOne("University_CQRS.Contracts.Entities.Students.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("University_CQRS.Persistance.Entities.Students.Student", "Student")
+                    b.HasOne("University_CQRS.Contracts.Entities.Students.Student", "Student")
                         .WithMany("Disenrollments")
                         .HasForeignKey("StudentId");
 
@@ -130,13 +130,13 @@ namespace University_CQRS.Persistance.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Enrollment", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Enrollment", b =>
                 {
-                    b.HasOne("University_CQRS.Persistance.Entities.Students.Course", "Course")
+                    b.HasOne("University_CQRS.Contracts.Entities.Students.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("University_CQRS.Persistance.Entities.Students.Student", "Student")
+                    b.HasOne("University_CQRS.Contracts.Entities.Students.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentId");
 
@@ -145,7 +145,7 @@ namespace University_CQRS.Persistance.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("University_CQRS.Persistance.Entities.Students.Student", b =>
+            modelBuilder.Entity("University_CQRS.Contracts.Entities.Students.Student", b =>
                 {
                     b.Navigation("Disenrollments");
 

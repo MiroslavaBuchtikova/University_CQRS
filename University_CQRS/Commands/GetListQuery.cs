@@ -1,6 +1,5 @@
 ﻿
 using MediatR;
-using University_CQRS.Dtos;
 
 namespace University_CQRS.Commands
 {
@@ -8,9 +7,12 @@ namespace University_CQRS.Commands
     {
         public string EnrolledIn { get; }
 
-        public GetListQuery(string enrolledIn)
+        public int? NumberOfCourses { get; }
+
+        public GetListQuery(string enrolledIn, int? numberOfCourses)
         {
             EnrolledIn = enrolledIn;
+            NumberOfCourses = numberOfCourses;
         }
     }
 }

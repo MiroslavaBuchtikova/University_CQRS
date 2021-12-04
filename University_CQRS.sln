@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University_CQRS", "University_CQRS\University_CQRS.csproj", "{413E2C58-3928-4A90-919B-360AD995AD8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University_CQRS.Persistance", "University_CQRS.Persistance\University_CQRS.Persistance.csproj", "{F57BFFA4-7E49-4D71-8648-B24487E38BD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "University_CQRS.Persistance", "University_CQRS.Persistance\University_CQRS.Persistance.csproj", "{F57BFFA4-7E49-4D71-8648-B24487E38BD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "University_CQRS.Contracts", "University.Contracts\University_CQRS.Contracts.csproj", "{4029532C-026B-45FD-8696-FAE8B8B3DA69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F57BFFA4-7E49-4D71-8648-B24487E38BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F57BFFA4-7E49-4D71-8648-B24487E38BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F57BFFA4-7E49-4D71-8648-B24487E38BD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4029532C-026B-45FD-8696-FAE8B8B3DA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4029532C-026B-45FD-8696-FAE8B8B3DA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4029532C-026B-45FD-8696-FAE8B8B3DA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4029532C-026B-45FD-8696-FAE8B8B3DA69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

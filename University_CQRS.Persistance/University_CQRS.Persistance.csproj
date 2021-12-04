@@ -19,6 +19,9 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\University.Contracts\University_CQRS.Contracts.csproj" />
+	</ItemGroup>
+	<ItemGroup>
 	  <Folder Include="Migrations\" />
 	</ItemGroup>
 

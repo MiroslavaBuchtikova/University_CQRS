@@ -14,9 +14,9 @@ namespace University
         }
 
         [HttpGet]
-        public IActionResult GetList(string enrolled)
+        public IActionResult GetList(string enrolled, int? numberOfCourses)
         {
-            var result =  _mediator.Send(new GetListQuery(enrolled));
+            var result =  _mediator.Send(new GetListQuery(enrolled, numberOfCourses));
 
             return Ok(result.Result);
         }
