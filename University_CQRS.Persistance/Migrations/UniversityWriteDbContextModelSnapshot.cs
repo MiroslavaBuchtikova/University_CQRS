@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using University_CQRS.Persistance.Context;
 
@@ -11,11 +10,10 @@ using University_CQRS.Persistance.Context;
 
 namespace University_CQRS.Persistance.Migrations
 {
-    [DbContext(typeof(UniversityDbContext))]
-    [Migration("20211204113143_Initial")]
-    partial class Initial
+    [DbContext(typeof(UniversityWriteDbContext))]
+    partial class UniversityWriteDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

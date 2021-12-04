@@ -33,7 +33,7 @@ namespace University_CQRS.Handlers
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
             student.Enroll(course, grade);
-             _studentRepository.Save(student);
+            await _studentRepository.SaveAsync(student);
 
             return new ResultDto(student.Id, true);
         }

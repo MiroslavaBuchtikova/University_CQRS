@@ -25,7 +25,7 @@ namespace University_CQRS.Handlers
             student.Name = request.Name;
             student.Email = request.Email;
 
-             _studentRepository.Save(student);
+            await _studentRepository.SaveAsync(student);
             return new ResultDto(student.Id, true);
         }
     }

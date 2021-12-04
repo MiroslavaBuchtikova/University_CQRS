@@ -4,11 +4,14 @@ namespace University_CQRS.Persistance.Repositories
 {
     public abstract class GenericRepository<T>
     {
-        protected UniversityDbContext DbContext { get; }
+        protected UniversityWriteDbContext DbContext { get; }
 
-        public GenericRepository(UniversityDbContext dbContext)
+        protected UniversityReadDbContext DbReadContext { get; }
+
+        public GenericRepository(UniversityWriteDbContext dbContext, UniversityReadDbContext dbReadContext)
         {
             DbContext = dbContext;
+            DbReadContext = dbReadContext;
         }
     }
 }

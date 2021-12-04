@@ -29,7 +29,7 @@ namespace University_CQRS.Handlers
                 throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
 
             student.RemoveEnrollment(enrollment, request.Comment);
-             _studentRepository.Save(student);
+            await _studentRepository.SaveAsync(student);
 
             return new ResultDto(student.Id, true);
         }

@@ -4,13 +4,13 @@ using University_CQRS.Contracts.Entities.Students;
 
 namespace University_CQRS.Persistance.Context
 {
-    public class UniversityDbContext : DbContext
+    public class UniversityWriteDbContext : DbContext
     {
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Enrollment> Enrollments { get; set; }
         public virtual DbSet<Disenrollment> Disenrollments { get; set; }
-        public UniversityDbContext(DbContextOptions options) :
+        public UniversityWriteDbContext(DbContextOptions options) :
             base(options)
         {
 

@@ -2,11 +2,13 @@
 using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Context;
 
+using University_CQRS.Persistance.Mapping;
+
 namespace University_CQRS.Persistance.Repositories
 {
     public sealed class StudentRepository : GenericRepository<Student>
     {
-        public StudentRepository(UniversityDbContext dbContext) : base(dbContext)
+        public StudentRepository(UniversityWriteDbContext dbContext, UniversityReadDbContext dbReadContext) : base(dbContext, dbReadContext)
         {
         }
 
@@ -15,31 +17,64 @@ namespace University_CQRS.Persistance.Repositories
             return DbContext.Students?.Include(x => x.Enrollments)
                 .ThenInclude(x => x.Course).FirstOrDefault(w => w.Id == id);
         }
-
-        public IReadOnlyList<Student> GetList(string enrolledIn)
+        public async Task SaveAsync(Student student)
         {
-            var result = DbContext.Students.Include(x=>x.Enrollments)
-                .ThenInclude(x=>x.Course).ToList();
 
-            if (!string.IsNullOrWhiteSpace(enrolledIn))
+            var strategy = DbContext.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
             {
-                result = result.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn)).ToList();
-            }
+                await DbContext.Database.BeginTransactionAsync();
 
+                try
+                {
+                    DbContext.Update(student);
+                    DbReadContext.Update(student.Map());
 
-            return result;
+                    DbContext.SaveChanges();
+                    DbReadContext.SaveChanges();
+                    DbContext.Database.CommitTransaction();
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    DbContext.Database.RollbackTransaction();
+                }
+                catch (Exception e)
+                {
+                    DbContext.Database.RollbackTransaction();
+                    throw;
+                }
+            });
+
         }
 
-        public void Save(Student student)
+        public async void Delete(Student student)
         {
-            DbContext.Update(student);
-            DbContext.SaveChanges();
-        }
+            var strategy = DbContext.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                await DbContext.Database.BeginTransactionAsync();
 
-        public void Delete(Student student)
-        {
-            DbContext.Remove(student);
-            DbContext.SaveChanges();
+                try
+                {
+                    DbContext.Remove(student);
+                    var aggregatedStudent = DbReadContext.Students?.SingleOrDefault(x => x.Id == student.Id);
+                    DbReadContext.Remove(aggregatedStudent);
+                    DbContext.SaveChanges();
+                    DbReadContext.SaveChanges();
+                    DbContext.Database.CommitTransaction();
+                }
+                catch (DbUpdateConcurrencyException e)
+                {
+                    DbContext.Database.RollbackTransaction();
+                }
+                catch (Exception e)
+                {
+                    DbContext.Database.RollbackTransaction();
+                    throw;
+                }
+            });
+
+
         }
     }
 }

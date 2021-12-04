@@ -34,7 +34,7 @@ namespace University_CQRS.Handlers
                 student.Enroll(course, Enum.Parse<Grade>(request.Course2Grade));
             }
 
-            _studentRepository.Save(student);
+            await _studentRepository.SaveAsync(student);
 
             return new ResultDto(student.Id, true);
         }
