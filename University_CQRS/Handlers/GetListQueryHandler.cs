@@ -1,8 +1,8 @@
 ﻿
 using MediatR;
-using University_CQRS.Commands;
 using University_CQRS.Mapping;
 using University_CQRS.Persistance.Repositories;
+using University_CQRS.Queries;
 
 namespace University_CQRS.Handlers
 {

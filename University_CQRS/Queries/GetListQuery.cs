@@ -1,7 +1,7 @@
 ﻿
 using MediatR;
 
-namespace University_CQRS.Commands
+namespace University_CQRS.Queries
 {
     public class GetListQuery : IRequest<List<StudentDto>>
     {

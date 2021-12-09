@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using University_CQRS.Commands;
+using University_CQRS.Queries;
 
 namespace University
 {
