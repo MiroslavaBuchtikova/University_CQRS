@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class EnrollCommandHandler : IRequestHandler<EnrollCommand, ResultDto>
+    public class EnrollCommandHandler : IRequestHandler<EnrollCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
@@ -18,11 +18,11 @@ namespace University_CQRS.Handlers
             _courseRepository = courseRepository;
         }
 
-        public async Task<ResultDto> Handle(EnrollCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EnrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found with Id {request.Id}");
+                throw new Exception($"No student found with Id {request.StudentId}");
 
             Course course = _courseRepository.GetByName(request.Course);
             if (course == null)
@@ -32,10 +32,24 @@ namespace University_CQRS.Handlers
             if (!success)
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
-            student.Enroll(course, grade);
-            await _studentRepository.SaveAsync(student);
+            if (student.Enrollments?.Count >= 2)
+                throw new Exception("Cannot have more than 2 enrollments");
 
-            return new ResultDto(student.Id, true);
+            var enrollment = new Enrollment
+            {
+                Course = course,
+                Grade = grade
+            };
+
+            if (student.Enrollments == null)
+            {
+                student.Enrollments = new List<Enrollment>();
+            }
+
+            student.Enrollments.Add(enrollment);
+             _studentRepository.SaveAsync(student);
+
+            return Unit.Value;
         }
     }
 }

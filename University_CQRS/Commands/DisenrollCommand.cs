@@ -2,16 +2,16 @@
 
 namespace University_CQRS.Commands
 {
-    public class DisenrollCommand : IRequest<ResultDto>
+    public class DisenrollCommand : IRequest<Unit>
     {
-        public long Id { get; }
-        public int EnrollmentNumber { get; }
+        public long StudentId { get; }
+        public int EnrollmentIndex { get; }
         public string Comment { get; }
 
-        public DisenrollCommand(long id, int enrollmentNumber, string comment)
+        public DisenrollCommand(long studentId, int enrollmentIndex, string comment)
         {
-            Id = id;
-            EnrollmentNumber = enrollmentNumber;
+            StudentId = studentId;
+            EnrollmentIndex = enrollmentIndex;
             Comment = comment;
         }
     }

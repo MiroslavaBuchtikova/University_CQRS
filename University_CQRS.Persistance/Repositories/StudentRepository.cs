@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Context;
-
 using University_CQRS.Persistance.Mapping;
 
 namespace University_CQRS.Persistance.Repositories
@@ -14,12 +13,32 @@ namespace University_CQRS.Persistance.Repositories
 
         public Student GetById(long id)
         {
-            return DbContext.Students?.Include(x => x.Enrollments)
-                .ThenInclude(x => x.Course).FirstOrDefault(w => w.Id == id);
+            return DbContext.Students
+            .Include(x => x.Enrollments)
+            .ThenInclude(x => x.Course)
+            .Include(x => x.Disenrollments)
+            .FirstOrDefault(w => w.Id == id);
         }
-        public async Task SaveAsync(Student student)
-        {
 
+        public IReadOnlyList<Student> GetList(string enrolledIn)
+        {
+            var result = DbContext.Students
+            .Include(x => x.Enrollments)
+            .ThenInclude(x => x.Course)
+            .Include(x => x.Disenrollments)
+            .ToList();
+
+            if (!string.IsNullOrWhiteSpace(enrolledIn))
+            {
+                result = result.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn)).ToList();
+            }
+
+
+            return result;
+        }
+
+        public async void SaveAsync(Student student)
+        {
             var strategy = DbContext.Database.CreateExecutionStrategy();
             await strategy.ExecuteAsync(async () =>
             {
@@ -44,7 +63,6 @@ namespace University_CQRS.Persistance.Repositories
                     throw;
                 }
             });
-
         }
 
         public async void Delete(Student student)

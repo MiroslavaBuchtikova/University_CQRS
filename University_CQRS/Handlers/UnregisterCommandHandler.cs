@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class UnregisterCommandHandler : IRequestHandler<UnregisterCommand, ResultDto>
+    public class UnregisterCommandHandler : IRequestHandler<UnregisterCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
 
@@ -15,15 +15,15 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public Task<ResultDto> Handle(UnregisterCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UnregisterCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found for Id {request.Id}");
+                throw new Exception($"No student found for Id {request.StudentId}");
 
             _studentRepository.Delete(student);
 
-            return Task.FromResult(new ResultDto(request.Id, true));
+            return Unit.Value;
         }
     }
 }

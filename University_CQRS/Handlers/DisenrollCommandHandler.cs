@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, ResultDto>
+    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
 
@@ -15,23 +15,37 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public async Task<ResultDto> Handle(DisenrollCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DisenrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found for Id {request.Id}");
+                throw new Exception($"No student found for Id {request.StudentId}");
 
             if (string.IsNullOrWhiteSpace(request.Comment))
                 throw new Exception("Disenrollment comment is required");
 
-            Enrollment enrollment = student.GetEnrollment(request.EnrollmentNumber);
+            Enrollment enrollment = student.Enrollments.Count > request.EnrollmentIndex ? student.Enrollments[request.EnrollmentIndex] : null;
             if (enrollment == null)
-                throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
+                throw new Exception($"No enrollment found with number '{request.EnrollmentIndex}'");
 
-            student.RemoveEnrollment(enrollment, request.Comment);
-            await _studentRepository.SaveAsync(student);
+            student.Enrollments.Remove(enrollment);
 
-            return new ResultDto(student.Id, true);
+            var disenrollment = new Disenrollment
+            {
+                Student = student,
+                Course = enrollment.Course,
+                Comment = request.Comment,
+                DateTime = DateTime.Now
+            };
+            if (student.Disenrollments == null)
+            {
+                student.Disenrollments = new List<Disenrollment>();
+            }
+            student.Disenrollments.Add(disenrollment);
+
+            _studentRepository.SaveAsync(student);
+
+            return Unit.Value;
         }
     }
 }

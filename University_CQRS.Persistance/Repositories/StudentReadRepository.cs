@@ -3,9 +3,9 @@ using University_CQRS.Persistance.Context;
 
 namespace University_CQRS.Persistance.Repositories
 {
-    public sealed class AggregatedStudentRepository : GenericRepository<StudentAggregate>
+    public sealed class StudentReadRepository : GenericRepository<StudentAggregate>
     {
-        public AggregatedStudentRepository(UniversityWriteDbContext dbContext, UniversityReadDbContext dbReadContext) : base(dbContext, dbReadContext)
+        public StudentReadRepository(UniversityWriteDbContext dbContext, UniversityReadDbContext dbReadContext) : base(dbContext, dbReadContext)
         {
         }
 

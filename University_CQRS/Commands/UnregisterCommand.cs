@@ -2,13 +2,13 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class UnregisterCommand : IRequest<ResultDto>
+    public sealed class UnregisterCommand : IRequest<Unit>
     {
-        public long Id { get; }
+        public long StudentId { get; }
 
         public UnregisterCommand(long id)
         {
-            Id = id;
+            StudentId = id;
         }
     }
 }

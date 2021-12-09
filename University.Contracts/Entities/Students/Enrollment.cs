@@ -2,27 +2,10 @@
 {
     public class Enrollment : EntityBase
     {
-        public virtual Student Student { get; protected set; }
-        public virtual Course Course { get; protected set; }
-        public virtual Grade Grade { get; protected set; }
+        public virtual Student Student { get;  set; }
+        public virtual Course Course { get;  set; }
+        public virtual Grade Grade { get;  set; }
 
-        protected Enrollment()
-        {
-        }
-
-        public Enrollment(Student student, Course course, Grade grade)
-            : this()
-        {
-            Student = student;
-            Course = course;
-            Grade = grade;
-        }
-
-        public virtual void Update(Course course, Grade grade)
-        {
-            Course = course;
-            Grade = grade;
-        }
     }
 
     public enum Grade

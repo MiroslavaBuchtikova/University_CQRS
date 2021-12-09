@@ -3,15 +3,15 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class EnrollCommand : IRequest<ResultDto>
+    public sealed class EnrollCommand : IRequest<Unit>
     {
-        public long Id { get; }
+        public long StudentId { get; }
         public string Course { get; }
         public string Grade { get; }
 
-        public EnrollCommand(long id, string course, string grade)
+        public EnrollCommand(long studentId, string course, string grade)
         {
-            Id = id;
+            StudentId = studentId;
             Course = course;
             Grade = grade;
         }

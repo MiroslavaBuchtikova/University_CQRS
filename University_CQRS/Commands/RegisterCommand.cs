@@ -3,7 +3,7 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class RegisterCommand : IRequest<ResultDto>
+    public sealed class RegisterCommand : IRequest<Unit>
     {
         public string Name { get; }
         public string Email { get; }

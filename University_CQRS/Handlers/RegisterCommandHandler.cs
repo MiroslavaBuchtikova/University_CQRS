@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ResultDto>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
@@ -18,25 +18,40 @@ namespace University_CQRS.Handlers
             _courseRepository = courseRepository;
         }
 
-        public async Task<ResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var student = new Student(request.Name, request.Email);
-
-            if (request.Course1 != null && request.Course1Grade != null)
+            var student = new Student
             {
-                Course course = _courseRepository.GetByName(request.Course1);
-                student.Enroll(course, Enum.Parse<Grade>(request.Course1Grade));
+                Name = request.Name,
+                Email = request.Email
+            };
+
+            AddEnrollment(request.Course1, request.Course1Grade, student);
+            AddEnrollment(request.Course2, request.Course2Grade, student);
+
+            _studentRepository.SaveAsync(student);
+
+            return Unit.Value;
+        }
+
+        public void AddEnrollment(string courseName, string grade, Student student)
+        {
+            Course course = _courseRepository.GetByName(courseName);
+            if (student.Enrollments?.Count >= 2)
+                throw new Exception("Cannot have more than 2 enrollments");
+
+            var enrollment = new Enrollment
+            {
+                Course = course,
+                Grade = Enum.Parse<Grade>(grade)
+            };
+
+            if (student.Enrollments == null)
+            {
+                student.Enrollments = new List<Enrollment>();
             }
 
-            if (request.Course2 != null && request.Course2Grade != null)
-            {
-                Course course = _courseRepository.GetByName(request.Course2);
-                student.Enroll(course, Enum.Parse<Grade>(request.Course2Grade));
-            }
-
-            await _studentRepository.SaveAsync(student);
-
-            return new ResultDto(student.Id, true);
+            student.Enrollments.Add(enrollment);
         }
     }
 }

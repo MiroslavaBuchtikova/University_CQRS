@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class PersonalInfoCommandHandler : IRequestHandler<EditPersonalInfoCommand, ResultDto>
+    public class PersonalInfoCommandHandler : IRequestHandler<EditPersonalInfoCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
 
@@ -15,18 +15,18 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public async Task<ResultDto> Handle(EditPersonalInfoCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EditPersonalInfoCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
 
             if (student == null)
-                throw new Exception($"No student found for Id {request.Id}");
+                throw new Exception($"No student found for Id {request.StudentId}");
 
             student.Name = request.Name;
             student.Email = request.Email;
 
-            await _studentRepository.SaveAsync(student);
-            return new ResultDto(student.Id, true);
+             _studentRepository.SaveAsync(student);
+            return Unit.Value;
         }
     }
 }

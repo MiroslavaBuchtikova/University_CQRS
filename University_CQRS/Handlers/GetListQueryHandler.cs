@@ -1,15 +1,16 @@
 ﻿
 using MediatR;
-using University_CQRS.Commands;
+using University_CQRS.Mapping;
 using University_CQRS.Persistance.Repositories;
+using University_CQRS.Queries;
 
 namespace University_CQRS.Handlers
 {
     public class GetListQueryHandler : IRequestHandler<GetListQuery, List<StudentDto>>
     {
-        private readonly AggregatedStudentRepository _studentRepository;
+        private readonly StudentReadRepository _studentRepository;
 
-        public GetListQueryHandler(AggregatedStudentRepository studentRepository)
+        public GetListQueryHandler(StudentReadRepository studentRepository)
         {
             _studentRepository = studentRepository;
         }
