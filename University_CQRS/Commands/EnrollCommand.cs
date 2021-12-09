@@ -9,9 +9,9 @@ namespace University_CQRS.Commands
         public string Course { get; }
         public string Grade { get; }
 
-        public EnrollCommand(long id, string course, string grade)
+        public EnrollCommand(long studentId, string course, string grade)
         {
-            StudentId = id;
+            StudentId = studentId;
             Course = course;
             Grade = grade;
         }

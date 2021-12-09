@@ -33,40 +33,40 @@ namespace University
             return Ok(result.Result);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Unregister(long id)
+        [HttpDelete("{studentId}")]
+        public IActionResult Unregister(long studentId)
         {
-            var result = _mediator.Send(new UnregisterCommand(id));
+            var result = _mediator.Send(new UnregisterCommand(studentId));
             return Ok(result.Result);
         }
 
-        [HttpPost("{id}/enrollments")]
-        public IActionResult Enroll(long id, [FromBody] StudentEnrollmentDto dto)
+        [HttpPost("{studentId}/enrollments")]
+        public IActionResult Enroll(long studentId, [FromBody] StudentEnrollmentDto dto)
         {
-            var result = _mediator.Send(new EnrollCommand(id, dto.Course, dto.Grade));
+            var result = _mediator.Send(new EnrollCommand(studentId, dto.Course, dto.Grade));
             return Ok(result.Result);
         }
 
-        [HttpPut("{id}/enrollments/{enrollmentIndex}")]
+        [HttpPut("{studentId}/enrollments/{enrollmentIndex}")]
         public IActionResult Transfer(
-          long id, int enrollmentIndex, [FromBody] StudentTransferDto dto)
+          long studentId, int enrollmentIndex, [FromBody] StudentTransferDto dto)
         {
-            var result = _mediator.Send(new TransferCommand(id, enrollmentIndex, dto.Course, dto.Grade));
+            var result = _mediator.Send(new TransferCommand(studentId, enrollmentIndex, dto.Course, dto.Grade));
             return Ok(result.Result);
         }
 
-        [HttpPost("{id}/enrollments/{enrollmentIndex}/disenroll")]
+        [HttpPost("{studentId}/enrollments/{enrollmentIndex}/disenroll")]
         public IActionResult Disenroll(
-           long id, int enrollmentNumber, [FromBody] StudentDisenrollmentDto dto)
+           long studentId, int enrollmentNumber, [FromBody] StudentDisenrollmentDto dto)
         {
-            var result = _mediator.Send(new DisenrollCommand(id, enrollmentNumber, dto.Comment));
+            var result = _mediator.Send(new DisenrollCommand(studentId, enrollmentNumber, dto.Comment));
             return Ok(result.Result);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult EditPersonalInfo(long id, [FromBody] StudentPersonalInfoDto dto)
+        [HttpPut("{studentId}")]
+        public IActionResult EditPersonalInfo(long studentId, [FromBody] StudentPersonalInfoDto dto)
         {
-            var result = _mediator.Send(new EditPersonalInfoCommand(id, dto.Name, dto.Email));
+            var result = _mediator.Send(new EditPersonalInfoCommand(studentId, dto.Name, dto.Email));
             return Ok(result.Result);
         }
     }

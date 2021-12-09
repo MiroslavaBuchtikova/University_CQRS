@@ -8,9 +8,9 @@ namespace University_CQRS.Commands
         public int EnrollmentIndex { get; }
         public string Comment { get; }
 
-        public DisenrollCommand(long id, int enrollmentIndex, string comment)
+        public DisenrollCommand(long studentId, int enrollmentIndex, string comment)
         {
-            StudentId = id;
+            StudentId = studentId;
             EnrollmentIndex = enrollmentIndex;
             Comment = comment;
         }

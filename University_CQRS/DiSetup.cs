@@ -1,8 +1,5 @@
 using University_CQRS.Persistance.Repositories;
 using System.Reflection;
-using System.Linq;
-using System;
-using System.Collections.Generic;
 
 namespace University_CQRS
 {

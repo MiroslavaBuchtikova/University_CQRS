@@ -21,7 +21,8 @@ namespace University_CQRS
             services.AddMvc()
                  .AddControllersAsServices();
             services.AddControllers();
-            services.AddRepositories().AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddRepositories()
+                    .AddMediatR(Assembly.GetExecutingAssembly());
 
             var connectionString = Configuration.GetConnectionString("database");
             services.AddDbContextPool<UniversityDbContext>(option =>

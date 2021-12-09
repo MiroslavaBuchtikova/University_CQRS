@@ -18,9 +18,9 @@ namespace University_CQRS.Handlers
 
         public async Task<Unit> Handle(TransferCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found with Id '{request.Id}'");
+                throw new Exception($"No student found with Id '{request.StudentId}'");
 
             Course course = _courseRepository.GetByName(request.Course);
             if (course == null)
