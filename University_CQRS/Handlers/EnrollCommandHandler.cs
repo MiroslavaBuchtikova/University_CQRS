@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class EnrollCommandHandler : IRequestHandler<EnrollCommand, ResultDto>
+    public class EnrollCommandHandler : IRequestHandler<EnrollCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
@@ -18,11 +18,11 @@ namespace University_CQRS.Handlers
             _courseRepository = courseRepository;
         }
 
-        public async Task<ResultDto> Handle(EnrollCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EnrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found with Id {request.Id}");
+                throw new Exception($"No student found with Id {request.StudentId}");
 
             Course course = _courseRepository.GetByName(request.Course);
             if (course == null)
@@ -49,7 +49,7 @@ namespace University_CQRS.Handlers
             student.Enrollments.Add(enrollment);
              _studentRepository.Save(student);
 
-            return new ResultDto(student.Id, true);
+            return Unit.Value;
         }
     }
 }

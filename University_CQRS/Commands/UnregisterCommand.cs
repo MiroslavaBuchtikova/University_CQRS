@@ -2,7 +2,7 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class UnregisterCommand : IRequest<ResultDto>
+    public sealed class UnregisterCommand : IRequest<Unit>
     {
         public long Id { get; }
 

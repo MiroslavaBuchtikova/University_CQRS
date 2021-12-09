@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, ResultDto>
+    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
 
@@ -15,11 +15,11 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public async Task<ResultDto> Handle(DisenrollCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DisenrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.Id);
+            Student student = _studentRepository.GetById(request.StudentId);
             if (student == null)
-                throw new Exception($"No student found for Id {request.Id}");
+                throw new Exception($"No student found for Id {request.StudentId}");
 
             if (string.IsNullOrWhiteSpace(request.Comment))
                 throw new Exception("Disenrollment comment is required");
@@ -45,7 +45,7 @@ namespace University_CQRS.Handlers
 
             _studentRepository.Save(student);
 
-            return new ResultDto(student.Id, true);
+            return Unit.Value;
         }
     }
 }

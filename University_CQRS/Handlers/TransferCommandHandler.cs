@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class TransferCommandHandler : IRequestHandler<TransferCommand, ResultDto>
+    public class TransferCommandHandler : IRequestHandler<TransferCommand, Unit>
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
@@ -16,7 +16,7 @@ namespace University_CQRS.Handlers
             _courseRepository = courseRepository;
         }
 
-        public async Task<ResultDto> Handle(TransferCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(TransferCommand request, CancellationToken cancellationToken)
         {
             Student student = _studentRepository.GetById(request.Id);
             if (student == null)
@@ -39,7 +39,7 @@ namespace University_CQRS.Handlers
 
              _studentRepository.Save(student);
 
-            return new ResultDto(student.Id, true);
+            return Unit.Value;
         }
     }
 }
