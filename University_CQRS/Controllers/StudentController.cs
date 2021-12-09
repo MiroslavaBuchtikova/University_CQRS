@@ -25,8 +25,9 @@ namespace University
         public IActionResult Register([FromBody] NewStudentDto dto)
         {
             var result = _mediator.Send(new RegisterCommand(
-                dto.Name, dto.Email,
-                dto.Enrollments.Select(s=> new RegisteredEnrollment { Grade = s.CourseGrade, Course = s.CourseName}).ToList()));
+                 dto.Name, dto.Email,
+                 dto.Course1, dto.Course1Grade,
+                 dto.Course2, dto.Course2Grade));
 
             return Ok(result.Result);
         }
@@ -41,19 +42,19 @@ namespace University
         [HttpPost("{id}/enrollments")]
         public IActionResult Enroll(long id, [FromBody] StudentEnrollmentDto dto)
         {
-            var result = _mediator.Send(new EnrollCommand(id, dto.CourseName, dto.CourseGrade));
+            var result = _mediator.Send(new EnrollCommand(id, dto.Course, dto.Grade));
             return Ok(result.Result);
         }
 
-        [HttpPut("{id}/enrollments/{enrollmentNumber}")]
+        [HttpPut("{id}/enrollments/{enrollmentIndex}")]
         public IActionResult Transfer(
-          long id, int enrollmentNumber, [FromBody] StudentTransferDto dto)
+          long id, int enrollmentIndex, [FromBody] StudentTransferDto dto)
         {
-            var result = _mediator.Send(new TransferCommand(id, enrollmentNumber, dto.Course, dto.Grade));
+            var result = _mediator.Send(new TransferCommand(id, enrollmentIndex, dto.Course, dto.Grade));
             return Ok(result.Result);
         }
 
-        [HttpPost("{id}/enrollments/{enrollmentNumber}/disenroll")]
+        [HttpPost("{id}/enrollments/{enrollmentIndex}/disenroll")]
         public IActionResult Disenroll(
            long id, int enrollmentNumber, [FromBody] StudentDisenrollmentDto dto)
         {

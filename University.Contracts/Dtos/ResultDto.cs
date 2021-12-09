@@ -3,10 +3,10 @@ public struct ResultDto
 {
     public ResultDto(long id, bool isSuccess)
     {
-        Id = id;
+        StudentId = id;
         IsSuccess = isSuccess;
     }
 
-    public long Id { get; }
+    public long StudentId { get; }
     public bool IsSuccess { get; }
 }

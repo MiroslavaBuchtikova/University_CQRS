@@ -26,29 +26,32 @@ namespace University_CQRS.Handlers
                 Email = request.Email
             };
 
-            foreach (var requestedEnrollment in request.Enrollments)
-            {
-                Course course = _courseRepository.GetByName(requestedEnrollment.Course);
-                if (student.Enrollments?.Count >= 2)
-                    throw new Exception("Cannot have more than 2 enrollments");
-
-                var enrollment = new Enrollment
-                {
-                    Course = course,
-                    Grade = Enum.Parse<Grade>(requestedEnrollment.Grade)
-                };
-
-                if (student.Enrollments == null)
-                {
-                    student.Enrollments = new List<Enrollment>();
-                }
-
-                student.Enrollments.Add(enrollment);
-            }
+            AddEnrollment(request.Course1, request.Course1Grade, student);
+            AddEnrollment(request.Course2, request.Course2Grade, student);
 
             _studentRepository.Save(student);
 
             return new ResultDto(student.Id, true);
+        }
+
+        public void AddEnrollment(string courseName, string grade, Student student)
+        {
+            Course course = _courseRepository.GetByName(courseName);
+            if (student.Enrollments?.Count >= 2)
+                throw new Exception("Cannot have more than 2 enrollments");
+
+            var enrollment = new Enrollment
+            {
+                Course = course,
+                Grade = Enum.Parse<Grade>(grade)
+            };
+
+            if (student.Enrollments == null)
+            {
+                student.Enrollments = new List<Enrollment>();
+            }
+
+            student.Enrollments.Add(enrollment);
         }
     }
 }

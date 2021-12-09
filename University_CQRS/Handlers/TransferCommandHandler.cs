@@ -30,9 +30,9 @@ namespace University_CQRS.Handlers
             if (!success)
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
-            Enrollment enrollment = student.Enrollments.SingleOrDefault(x=>x.Id == request.EnrollmentNumber);
+            Enrollment enrollment = student.Enrollments.Count > request.EnrollmentIndex ? student.Enrollments[request.EnrollmentIndex] : null;
             if (enrollment == null)
-                throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
+                throw new Exception($"No enrollment found with number '{request.EnrollmentIndex}'");
 
             enrollment.Course = course;
             enrollment.Grade = grade; 

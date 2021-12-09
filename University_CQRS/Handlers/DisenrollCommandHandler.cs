@@ -24,9 +24,9 @@ namespace University_CQRS.Handlers
             if (string.IsNullOrWhiteSpace(request.Comment))
                 throw new Exception("Disenrollment comment is required");
 
-            Enrollment enrollment = student.Enrollments.SingleOrDefault(w => w.Id == request.EnrollmentNumber);
+            Enrollment enrollment = student.Enrollments.Count > request.EnrollmentIndex ? student.Enrollments[request.EnrollmentIndex] : null;
             if (enrollment == null)
-                throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
+                throw new Exception($"No enrollment found with number '{request.EnrollmentIndex}'");
 
             student.Enrollments.Remove(enrollment);
 
