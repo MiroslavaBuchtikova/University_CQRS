@@ -7,19 +7,17 @@ namespace University_CQRS.Commands
     {
         public string Name { get; }
         public string Email { get; }
-        public string Course1 { get; }
-        public string Course1Grade { get; }
-        public string Course2 { get; }
-        public string Course2Grade { get; }
+        public List<RegisteredEnrollment> Enrollments { get; set; }
 
-        public RegisterCommand(string name, string email, string course1, string course1Grade, string course2, string course2Grade)
+        public RegisterCommand(string name, string email, List<RegisteredEnrollment> enrollments)
         {
             Name = name;
             Email = email;
-            Course1 = course1;
-            Course1Grade = course1Grade;
-            Course2 = course2;
-            Course2Grade = course2Grade;
+            Enrollments = enrollments;
         }
+    }
+    public class RegisteredEnrollment {
+        public string Course { get; set; }
+        public string Grade { get; set; }
     }
 }

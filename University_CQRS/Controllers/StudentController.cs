@@ -26,8 +26,7 @@ namespace University
         {
             var result = _mediator.Send(new RegisterCommand(
                 dto.Name, dto.Email,
-                dto.Course1, dto.Course1Grade,
-                dto.Course2, dto.Course2Grade));
+                dto.Enrollments.Select(s=> new RegisteredEnrollment { Grade = s.CourseGrade, Course = s.CourseName}).ToList()));
 
             return Ok(result.Result);
         }
@@ -42,7 +41,7 @@ namespace University
         [HttpPost("{id}/enrollments")]
         public IActionResult Enroll(long id, [FromBody] StudentEnrollmentDto dto)
         {
-            var result = _mediator.Send(new EnrollCommand(id, dto.Course, dto.Grade));
+            var result = _mediator.Send(new EnrollCommand(id, dto.CourseName, dto.CourseGrade));
             return Ok(result.Result);
         }
 

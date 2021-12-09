@@ -24,12 +24,26 @@ namespace University_CQRS.Handlers
             if (string.IsNullOrWhiteSpace(request.Comment))
                 throw new Exception("Disenrollment comment is required");
 
-            Enrollment enrollment = student.GetEnrollment(request.EnrollmentNumber);
+            Enrollment enrollment = student.Enrollments.SingleOrDefault(w => w.Id == request.EnrollmentNumber);
             if (enrollment == null)
                 throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
 
-            student.RemoveEnrollment(enrollment, request.Comment);
-             _studentRepository.Save(student);
+            student.Enrollments.Remove(enrollment);
+
+            var disenrollment = new Disenrollment
+            {
+                Student = student,
+                Course = enrollment.Course,
+                Comment = request.Comment,
+                DateTime = DateTime.Now
+            };
+            if (student.Disenrollments == null)
+            {
+                student.Disenrollments = new List<Disenrollment>();
+            }
+            student.Disenrollments.Add(disenrollment);
+
+            _studentRepository.Save(student);
 
             return new ResultDto(student.Id, true);
         }

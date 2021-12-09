@@ -20,18 +20,30 @@ namespace University_CQRS.Handlers
 
         public async Task<ResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var student = new Student(request.Name, request.Email);
-
-            if (request.Course1 != null && request.Course1Grade != null)
+            var student = new Student
             {
-                Course course = _courseRepository.GetByName(request.Course1);
-                student.Enroll(course, Enum.Parse<Grade>(request.Course1Grade));
-            }
+                Name = request.Name,
+                Email = request.Email
+            };
 
-            if (request.Course2 != null && request.Course2Grade != null)
+            foreach (var requestedEnrollment in request.Enrollments)
             {
-                Course course = _courseRepository.GetByName(request.Course2);
-                student.Enroll(course, Enum.Parse<Grade>(request.Course2Grade));
+                Course course = _courseRepository.GetByName(requestedEnrollment.Course);
+                if (student.Enrollments?.Count >= 2)
+                    throw new Exception("Cannot have more than 2 enrollments");
+
+                var enrollment = new Enrollment
+                {
+                    Course = course,
+                    Grade = Enum.Parse<Grade>(requestedEnrollment.Grade)
+                };
+
+                if (student.Enrollments == null)
+                {
+                    student.Enrollments = new List<Enrollment>();
+                }
+
+                student.Enrollments.Add(enrollment);
             }
 
             _studentRepository.Save(student);

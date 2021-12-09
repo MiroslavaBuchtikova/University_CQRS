@@ -32,7 +32,21 @@ namespace University_CQRS.Handlers
             if (!success)
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
-            student.Enroll(course, grade);
+            if (student.Enrollments?.Count >= 2)
+                throw new Exception("Cannot have more than 2 enrollments");
+
+            var enrollment = new Enrollment
+            {
+                Course = course,
+                Grade = grade
+            };
+
+            if (student.Enrollments == null)
+            {
+                student.Enrollments = new List<Enrollment>();
+            }
+
+            student.Enrollments.Add(enrollment);
              _studentRepository.Save(student);
 
             return new ResultDto(student.Id, true);

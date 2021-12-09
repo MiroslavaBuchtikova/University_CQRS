@@ -1,3 +1,4 @@
+using University_CQRS.Contracts.Dtos;
 using University_CQRS.Contracts.Entities.Students;
 
 namespace University_CQRS.Mapping
@@ -11,23 +12,23 @@ namespace University_CQRS.Mapping
             {
                 Id = student.Id,
                 Name = student.Name,
-                Email = student.Email
+                Email = student.Email,
+                Enrollments = student.Enrollments.Map()
             };
 
-            if (student.Enrollments.Count > 0)
-            {
-                studentDto.Course1 = student.Enrollments?[0]?.Course?.Name;
-                studentDto.Course1Grade = student.Enrollments?[0]?.Grade.ToString();
-                studentDto.Course1Credits = student.Enrollments?[0]?.Course?.Credits;
-            }
-            if (student.Enrollments.Count > 1)
-            {
-
-                studentDto.Course2 = student.Enrollments?[1]?.Course?.Name;
-                studentDto.Course2Grade = student.Enrollments?[1]?.Grade.ToString();
-                studentDto.Course2Credits = student.Enrollments?[1]?.Course?.Credits;
-            }
             return studentDto;
+        }
+        public static List<EnrollmentDto> Map(this IList<Enrollment> enrollments)
+        {
+            var mappedEnrolments = enrollments.Select(x => new EnrollmentDto
+            {
+                Id = x.Id,
+                CourseCredit = x.Course.Credits,
+                CourseGrade = x.Grade.ToString(),
+                CourseName = x.Course.Name
+            }).ToList();
+
+            return mappedEnrolments;
         }
 
         public static List<StudentDto> Map(this IReadOnlyList<Student> students)

@@ -30,11 +30,13 @@ namespace University_CQRS.Handlers
             if (!success)
                 throw new Exception($"Grade is incorrect: '{request.Grade}'");
 
-            Enrollment enrollment = student.GetEnrollment(request.EnrollmentNumber);
+            Enrollment enrollment = student.Enrollments.SingleOrDefault(x=>x.Id == request.EnrollmentNumber);
             if (enrollment == null)
                 throw new Exception($"No enrollment found with number '{request.EnrollmentNumber}'");
 
-            enrollment.Update(course, grade);
+            enrollment.Course = course;
+            enrollment.Grade = grade; 
+
              _studentRepository.Save(student);
 
             return new ResultDto(student.Id, true);
