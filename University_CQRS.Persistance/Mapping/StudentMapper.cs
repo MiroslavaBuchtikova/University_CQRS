@@ -1,5 +1,3 @@
-using University_CQRS.Contracts.Entities.Students;
-
 namespace University_CQRS.Persistance.Mapping
 {
     public static class StudentMapper

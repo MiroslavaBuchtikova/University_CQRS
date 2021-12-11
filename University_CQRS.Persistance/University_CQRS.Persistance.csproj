@@ -19,10 +19,10 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\University.Contracts\University_CQRS.Contracts.csproj" />
+	  <Folder Include="Migrations\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Migrations\" />
+	  <ProjectReference Include="..\University.Contracts\University_CQRS.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

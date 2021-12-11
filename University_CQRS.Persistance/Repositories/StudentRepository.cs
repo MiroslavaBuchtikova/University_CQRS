@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using University_CQRS.Contracts.Entities.Students;
 using University_CQRS.Persistance.Context;
 using University_CQRS.Persistance.Mapping;
 

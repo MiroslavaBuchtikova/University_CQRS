@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using University_CQRS.Contracts.Entities.Students;
+
 using University_CQRS.Persistance.Context;
 
 

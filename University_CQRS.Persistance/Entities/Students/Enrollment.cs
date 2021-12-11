@@ -1,5 +1,4 @@
-﻿namespace University_CQRS.Contracts.Entities.Students
-{
+﻿
     public class Enrollment : EntityBase
     {
         public virtual Student Student { get;  set; }
@@ -16,4 +15,4 @@
         D = 4,
         F = 5
     }
-}
+
