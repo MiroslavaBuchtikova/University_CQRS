@@ -20,6 +20,10 @@ namespace University_CQRS.Handlers
 
         public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            if (request.SSN == null)
+            {
+                throw new Exception($"SSN cant't be null");
+            }
             var studentExists = _studentRepository.GetBySSN(request.SSN);
             if(studentExists !=null)
             {
