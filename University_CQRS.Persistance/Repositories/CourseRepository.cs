@@ -1,4 +1,4 @@
-﻿using University_CQRS.Contracts.Entities.Students;
+﻿
 using University_CQRS.Persistance.Context;
 
 namespace University_CQRS.Persistance.Repositories

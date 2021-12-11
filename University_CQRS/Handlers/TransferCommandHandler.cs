@@ -1,7 +1,7 @@
 ﻿
 using MediatR;
 using University_CQRS.Commands;
-using University_CQRS.Contracts.Entities.Students;
+
 using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
