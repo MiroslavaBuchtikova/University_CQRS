@@ -19,7 +19,7 @@ namespace University_CQRS.Persistance.Repositories
             .FirstOrDefault(w => w.Id == id);
         }
 
-        public IReadOnlyList<Student> GetList(string enrolledIn)
+        public IReadOnlyList<Student> GetList(string courseName, int? numberOfCourses)
         {
             var result = DbContext.Students
             .Include(x => x.Enrollments)
@@ -27,9 +27,14 @@ namespace University_CQRS.Persistance.Repositories
             .Include(x => x.Disenrollments)
             .ToList();
 
-            if (!string.IsNullOrWhiteSpace(enrolledIn))
+            if (!string.IsNullOrWhiteSpace(courseName))
             {
-                result = result.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn)).ToList();
+                result = result.Where(x => x.Enrollments.Any(e => e.Course.Name == courseName)).ToList();
+            }
+
+            if (numberOfCourses != null)
+            {
+                result = result.Where(x => x.Enrollments.Count == numberOfCourses).ToList();
             }
 
 
