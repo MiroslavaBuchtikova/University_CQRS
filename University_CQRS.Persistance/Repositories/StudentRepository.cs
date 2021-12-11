@@ -19,23 +19,6 @@ namespace University_CQRS.Persistance.Repositories
             .FirstOrDefault(w => w.Id == id);
         }
 
-        public IReadOnlyList<Student> GetList(string enrolledIn)
-        {
-            var result = DbContext.Students
-            .Include(x => x.Enrollments)
-            .ThenInclude(x => x.Course)
-            .Include(x => x.Disenrollments)
-            .ToList();
-
-            if (!string.IsNullOrWhiteSpace(enrolledIn))
-            {
-                result = result.Where(x => x.Enrollments.Any(e => e.Course.Name == enrolledIn)).ToList();
-            }
-
-
-            return result;
-        }
-
         public async void SaveAsync(Student student)
         {
             var strategy = DbContext.Database.CreateExecutionStrategy();

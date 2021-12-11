@@ -29,11 +29,6 @@ namespace University_CQRS.Persistance.Mapping
 
             return studentAggregate;
         }
-
-        //public static List<StudentAggreagate> Map(this IEnumerable<Student> students)
-        //{
-        //    return students.Select(a => a.Map()).ToList();
-        //}
     }
 }
 

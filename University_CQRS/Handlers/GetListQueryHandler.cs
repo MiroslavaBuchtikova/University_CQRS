@@ -17,7 +17,7 @@ namespace University_CQRS.Handlers
 
         public async Task<List<StudentDto>> Handle(GetListQuery request, CancellationToken cancellationToken)
         {
-            var students = _studentRepository.GetList(request.EnrolledIn, request.NumberOfCourses).ToList();
+            var students = _studentRepository.GetList(request.CourseName, request.NumberOfCourses).ToList();
 
             return students;
         }

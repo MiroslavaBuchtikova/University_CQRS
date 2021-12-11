@@ -5,13 +5,13 @@ namespace University_CQRS.Queries
 {
     public class GetListQuery : IRequest<List<StudentDto>>
     {
-        public string EnrolledIn { get; }
+        public string CourseName { get; }
 
         public int? NumberOfCourses { get; }
 
-        public GetListQuery(string enrolledIn, int? numberOfCourses)
+        public GetListQuery(string courseName, int? numberOfCourses)
         {
-            EnrolledIn = enrolledIn;
+            CourseName = courseName;
             NumberOfCourses = numberOfCourses;
         }
     }
