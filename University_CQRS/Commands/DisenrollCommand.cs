@@ -2,7 +2,7 @@
 
 namespace University_CQRS.Commands
 {
-    public class DisenrollCommand : IRequest<Unit>
+    public class DisenrollCommand : IRequest<ResultDto>
     {
         public string SSN { get; }
         public int EnrollmentIndex { get; }

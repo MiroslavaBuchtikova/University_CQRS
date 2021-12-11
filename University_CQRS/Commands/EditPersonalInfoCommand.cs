@@ -3,7 +3,7 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class EditPersonalInfoCommand : IRequest<Unit>
+    public sealed class EditPersonalInfoCommand : IRequest<ResultDto>
     {
         public string SSN { get; }
         public string Name { get; }

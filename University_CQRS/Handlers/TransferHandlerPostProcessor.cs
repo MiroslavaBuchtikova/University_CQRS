@@ -7,7 +7,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class TransferHandlerPostProcessor : IRequestPostProcessor<TransferCommand, Unit>
+    public class TransferHandlerPostProcessor : IRequestPostProcessor<TransferCommand, ResultDto>
     {
         private readonly StudentReadRepository _studentReadRepository;
 
@@ -16,25 +16,27 @@ namespace University_CQRS.Handlers
             _studentReadRepository = studentReadRepository;
         }
 
-        public Task Process(TransferCommand request, Unit response, CancellationToken cancellationToken)
+        public Task Process(TransferCommand request, ResultDto response, CancellationToken cancellationToken)
         {
-            var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);;
-            if (request.EnrollmentIndex == 0)
+            if (response.IsSuccess)
             {
-                readStudentModel.Course1 = request.Course;
-                readStudentModel.Course1Grade = request.Grade;
-                readStudentModel.Course1DisenrollmentComment = null;
+                var readStudentModel = _studentReadRepository.GetBySSN(request.SSN); ;
+                if (request.EnrollmentIndex == 0)
+                {
+                    readStudentModel.Course1 = request.Course;
+                    readStudentModel.Course1Grade = request.Grade;
+                    readStudentModel.Course1DisenrollmentComment = null;
+                }
+
+                if (request.EnrollmentIndex == 1)
+                {
+                    readStudentModel.Course2 = request.Course;
+                    readStudentModel.Course2Grade = request.Grade;
+                    readStudentModel.Course2DisenrollmentComment = null;
+                }
+
+                _studentReadRepository.Save(readStudentModel);
             }
-
-            if (request.EnrollmentIndex == 1)
-            {
-                readStudentModel.Course2 = request.Course;
-                readStudentModel.Course2Grade = request.Grade;
-                readStudentModel.Course2DisenrollmentComment = null;
-            }
-
-            _studentReadRepository.Save(readStudentModel);
-
             return Task.CompletedTask;
         }
     }

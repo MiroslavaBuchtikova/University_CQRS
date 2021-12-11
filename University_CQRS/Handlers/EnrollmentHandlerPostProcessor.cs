@@ -7,7 +7,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class EnrollmentHandlerPostProcessor : IRequestPostProcessor<EnrollCommand, Unit>
+    public class EnrollmentHandlerPostProcessor : IRequestPostProcessor<EnrollCommand, ResultDto>
     {
         private readonly StudentReadRepository _studentReadRepository;
 
@@ -16,28 +16,30 @@ namespace University_CQRS.Handlers
             _studentReadRepository = studentReadRepository;
         }
 
-        public Task Process(EnrollCommand request, Unit response, CancellationToken cancellationToken)
+        public Task Process(EnrollCommand request, ResultDto response, CancellationToken cancellationToken)
         {
-            var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
-
-            if (readStudentModel.Course1 == null)
+            if (response.IsSuccess)
             {
-                readStudentModel.Course1 = request.Course;
-                readStudentModel.Course1Grade = request.Grade;
-                readStudentModel.Course1DisenrollmentComment = null;
-                readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses++;
+                var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
+
+                if (readStudentModel.Course1 == null)
+                {
+                    readStudentModel.Course1 = request.Course;
+                    readStudentModel.Course1Grade = request.Grade;
+                    readStudentModel.Course1DisenrollmentComment = null;
+                    readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses++;
+                }
+
+                if (readStudentModel.Course2 == null)
+                {
+                    readStudentModel.Course2 = request.Course;
+                    readStudentModel.Course2Grade = request.Grade;
+                    readStudentModel.Course2DisenrollmentComment = null;
+                    readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses++;
+                }
+
+                _studentReadRepository.Save(readStudentModel);
             }
-
-            if (readStudentModel.Course2 == null)
-            {
-                readStudentModel.Course2 = request.Course;
-                readStudentModel.Course2Grade = request.Grade;
-                readStudentModel.Course2DisenrollmentComment = null;
-                readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses++;
-            }
-
-            _studentReadRepository.Save(readStudentModel);
-
             return Task.CompletedTask;
         }
     }

@@ -3,7 +3,7 @@
 
 namespace University_CQRS.Commands
 {
-    public sealed class TransferCommand : IRequest<Unit>
+    public sealed class TransferCommand : IRequest<ResultDto>
     {
         public string SSN { get; }
         public int EnrollmentIndex { get; }

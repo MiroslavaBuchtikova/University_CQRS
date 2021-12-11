@@ -7,7 +7,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class DisenrollCommandHandlerPostProcessor : IRequestPostProcessor<DisenrollCommand, Unit>
+    public class DisenrollCommandHandlerPostProcessor : IRequestPostProcessor<DisenrollCommand, ResultDto>
     {
         private readonly StudentReadRepository _studentReadRepository;
 
@@ -16,28 +16,31 @@ namespace University_CQRS.Handlers
             _studentReadRepository = studentReadRepository;
         }
 
-        public Task Process(DisenrollCommand request, Unit response, CancellationToken cancellationToken)
+        public Task Process(DisenrollCommand request, ResultDto response, CancellationToken cancellationToken)
         {
-            var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
-            if (request.EnrollmentIndex == 0)
+            if (response.IsSuccess)
             {
-                readStudentModel.Course1 = null;
-                readStudentModel.Course1Grade = null;
-                readStudentModel.Course1Credits = null;
-                readStudentModel.Course1DisenrollmentComment = request.Comment;
-                readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses--;
-            }
+                var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
+                if (request.EnrollmentIndex == 0)
+                {
+                    readStudentModel.Course1 = null;
+                    readStudentModel.Course1Grade = null;
+                    readStudentModel.Course1Credits = null;
+                    readStudentModel.Course1DisenrollmentComment = request.Comment;
+                    readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses--;
+                }
 
-            if (request.EnrollmentIndex == 1)
-            {
-                readStudentModel.Course2 = null;
-                readStudentModel.Course2Grade = null;
-                readStudentModel.Course2Credits = null;
-                readStudentModel.Course2DisenrollmentComment = request.Comment;
-                readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses--;
-            }
+                if (request.EnrollmentIndex == 1)
+                {
+                    readStudentModel.Course2 = null;
+                    readStudentModel.Course2Grade = null;
+                    readStudentModel.Course2Credits = null;
+                    readStudentModel.Course2DisenrollmentComment = request.Comment;
+                    readStudentModel.NumberOfCourses = readStudentModel.NumberOfCourses--;
+                }
 
-            _studentReadRepository.Save(readStudentModel);
+                _studentReadRepository.Save(readStudentModel);
+            }
 
             return Task.CompletedTask;
         }

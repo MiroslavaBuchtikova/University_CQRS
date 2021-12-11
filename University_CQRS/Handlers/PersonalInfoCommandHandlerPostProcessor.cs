@@ -7,7 +7,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class PersonalInfoCommandHandlerPostProcessor : IRequestPostProcessor<EditPersonalInfoCommand, Unit>
+    public class PersonalInfoCommandHandlerPostProcessor : IRequestPostProcessor<EditPersonalInfoCommand, ResultDto>
     {
         private readonly StudentReadRepository _studentReadRepository;
 
@@ -16,12 +16,15 @@ namespace University_CQRS.Handlers
             _studentReadRepository = studentReadRepository;
         }
 
-        public Task Process(EditPersonalInfoCommand request, Unit response, CancellationToken cancellationToken)
+        public Task Process(EditPersonalInfoCommand request, ResultDto response, CancellationToken cancellationToken)
         {
-            var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
-            readStudentModel.Name = request.Name;
-            readStudentModel.Email = request.Email;
-            _studentReadRepository.Save(readStudentModel);
+            if (response.IsSuccess)
+            {
+                var readStudentModel = _studentReadRepository.GetBySSN(request.SSN);
+                readStudentModel.Name = request.Name;
+                readStudentModel.Email = request.Email;
+                _studentReadRepository.Save(readStudentModel);
+            }
 
             return Task.CompletedTask;
         }

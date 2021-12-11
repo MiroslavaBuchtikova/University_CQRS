@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Unit>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ResultDto>
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
@@ -18,7 +18,7 @@ namespace University_CQRS.Handlers
             _courseRepository = courseRepository;
         }
 
-        public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<ResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (request.SSN == null)
             {
@@ -41,7 +41,7 @@ namespace University_CQRS.Handlers
 
             _studentRepository.Save(student);
 
-            return Unit.Value;
+            return new ResultDto(true);
         }
 
         public void AddEnrollment(string courseName, string grade, Student student)

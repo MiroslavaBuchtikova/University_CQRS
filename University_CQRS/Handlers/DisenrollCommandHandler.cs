@@ -6,7 +6,7 @@ using University_CQRS.Persistance.Repositories;
 
 namespace University_CQRS.Handlers
 {
-    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, Unit>
+    public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, ResultDto>
     {
         private readonly StudentRepository _studentRepository;
 
@@ -15,7 +15,7 @@ namespace University_CQRS.Handlers
             _studentRepository = studentRepository;
         }
 
-        public async Task<Unit> Handle(DisenrollCommand request, CancellationToken cancellationToken)
+        public async Task<ResultDto> Handle(DisenrollCommand request, CancellationToken cancellationToken)
         {
             Student student = _studentRepository.GetBySSN(request.SSN);;
             if (student == null)
@@ -45,7 +45,7 @@ namespace University_CQRS.Handlers
 
             _studentRepository.Save(student);
 
-            return Unit.Value;
+            return new ResultDto(true);
         }
     }
 }
