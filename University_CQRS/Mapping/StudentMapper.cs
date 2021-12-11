@@ -4,35 +4,31 @@ namespace University_CQRS.Mapping
 {
     public static class StudentMapper
     {
-        public static StudentDto Map(this Student student)
+        public static StudentDto Map(this ReadStudent readStudentModel)
         {
 
             var studentDto = new StudentDto
             {
-                Id = student.Id,
-                Name = student.Name,
-                Email = student.Email
+                SSN = readStudentModel.SSN,
+                Name = readStudentModel.Name,
+                Email = readStudentModel.Email,
+
+                Course1 = readStudentModel.Course1,
+                Course1Grade = readStudentModel.Course1Grade,
+                Course1Credits = readStudentModel.Course1Credits,
+                Course1DisenrollmentComment = readStudentModel.Course1DisenrollmentComment,
+
+                Course2 = readStudentModel.Course2,
+                Course2Grade = readStudentModel.Course2Grade,
+                Course2Credits = readStudentModel.Course2Credits,
+                Course2DisenrollmentComment = readStudentModel.Course2DisenrollmentComment
             };
-
-            if (student.Enrollments.Count > 0)
-            {
-                studentDto.Course1 = student.Enrollments?[0]?.Course?.Name;
-                studentDto.Course1Grade = student.Enrollments?[0]?.Grade.ToString();
-                studentDto.Course1Credits = student.Enrollments?[0]?.Course?.Credits;
-            }
-            if (student.Enrollments.Count > 1)
-            {
-
-                studentDto.Course2 = student.Enrollments?[1]?.Course?.Name;
-                studentDto.Course2Grade = student.Enrollments?[1]?.Grade.ToString();
-                studentDto.Course2Credits = student.Enrollments?[1]?.Course?.Credits;
-            }
             return studentDto;
         }
 
-        public static List<StudentDto> Map(this IReadOnlyList<Student> students)
+        public static List<StudentDto> Map(this IReadOnlyList<ReadStudent> readStudentModels)
         {
-            return students.Select(a => a.Map()).ToList();
+            return readStudentModels.Select(a => a.Map()).ToList();
         }
     }
 }

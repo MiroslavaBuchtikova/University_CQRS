@@ -4,13 +4,13 @@ namespace University_CQRS.Commands
 {
     public class DisenrollCommand : IRequest<Unit>
     {
-        public long StudentId { get; }
+        public string SSN { get; }
         public int EnrollmentIndex { get; }
         public string Comment { get; }
 
-        public DisenrollCommand(long studentId, int enrollmentIndex, string comment)
+        public DisenrollCommand(string ssn, int enrollmentIndex, string comment)
         {
-            StudentId = studentId;
+            SSN = ssn;
             EnrollmentIndex = enrollmentIndex;
             Comment = comment;
         }

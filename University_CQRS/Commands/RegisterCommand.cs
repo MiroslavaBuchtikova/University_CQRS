@@ -5,6 +5,7 @@ namespace University_CQRS.Commands
 {
     public sealed class RegisterCommand : IRequest<Unit>
     {
+        public string SSN { get; }
         public string Name { get; }
         public string Email { get; }
         public string Course1 { get; }
@@ -12,8 +13,9 @@ namespace University_CQRS.Commands
         public string Course2 { get; }
         public string Course2Grade { get; }
 
-        public RegisterCommand(string name, string email, string course1, string course1Grade, string course2, string course2Grade)
+        public RegisterCommand(string ssn, string name, string email, string course1, string course1Grade, string course2, string course2Grade)
         {
+            SSN = ssn;
             Name = name;
             Email = email;
             Course1 = course1;

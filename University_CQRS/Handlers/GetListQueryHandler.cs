@@ -8,16 +8,16 @@ namespace University_CQRS.Handlers
 {
     public class GetListQueryHandler : IRequestHandler<GetListQuery, List<StudentDto>>
     {
-        private readonly StudentRepository _studentRepository;
+        private readonly StudentReadRepository _studentReadRepository;
 
-        public GetListQueryHandler(StudentRepository studentRepository)
+        public GetListQueryHandler(StudentReadRepository studentReadRepository)
         {
-            _studentRepository = studentRepository;
+            _studentReadRepository = studentReadRepository;
         }
 
         public async Task<List<StudentDto>> Handle(GetListQuery request, CancellationToken cancellationToken)
         {
-            var students = _studentRepository.GetList(request.CourseName, request.NumberOfCourses);
+            var students = _studentReadRepository.GetList(request.CourseName, request.NumberOfCourses);
             var dtos = students.Map();
 
             return dtos;

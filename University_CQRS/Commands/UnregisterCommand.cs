@@ -4,11 +4,11 @@ namespace University_CQRS.Commands
 {
     public sealed class UnregisterCommand : IRequest<Unit>
     {
-        public long StudentId { get; }
+        public string SSN { get; }
 
-        public UnregisterCommand(long id)
+        public UnregisterCommand(string ssn)
         {
-            StudentId = id;
+            SSN = ssn;
         }
     }
 }

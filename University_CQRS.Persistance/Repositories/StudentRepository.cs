@@ -10,13 +10,13 @@ namespace University_CQRS.Persistance.Repositories
         {
         }
 
-        public Student GetById(long id)
+        public Student GetBySSN(string ssn)
         {
             return DbContext.Students
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .Include(x => x.Disenrollments)
-            .FirstOrDefault(w => w.Id == id);
+            .FirstOrDefault(w => w.SSN == ssn);
         }
 
         public IReadOnlyList<Student> GetList(string courseName, int? numberOfCourses)

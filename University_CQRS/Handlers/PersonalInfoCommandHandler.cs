@@ -17,10 +17,10 @@ namespace University_CQRS.Handlers
 
         public async Task<Unit> Handle(EditPersonalInfoCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.StudentId);
+            Student student = _studentRepository.GetBySSN(request.SSN);
 
             if (student == null)
-                throw new Exception($"No student found for Id {request.StudentId}");
+                throw new Exception($"No student found for SSN {request.SSN}");
 
             student.Name = request.Name;
             student.Email = request.Email;

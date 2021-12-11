@@ -17,9 +17,9 @@ namespace University_CQRS.Handlers
 
         public async Task<Unit> Handle(DisenrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetById(request.StudentId);
+            Student student = _studentRepository.GetBySSN(request.SSN);;
             if (student == null)
-                throw new Exception($"No student found for Id {request.StudentId}");
+                throw new Exception($"No student found for SSN {request.SSN}");
 
             if (string.IsNullOrWhiteSpace(request.Comment))
                 throw new Exception("Disenrollment comment is required");

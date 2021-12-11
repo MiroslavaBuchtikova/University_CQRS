@@ -5,13 +5,13 @@ namespace University_CQRS.Commands
 {
     public sealed class EditPersonalInfoCommand : IRequest<Unit>
     {
-        public long StudentId { get; }
+        public string SSN { get; }
         public string Name { get; }
         public string Email { get; }
 
-        public EditPersonalInfoCommand(long studentId, string name, string email)
+        public EditPersonalInfoCommand(string ssn, string name, string email)
         {
-            StudentId = studentId;
+            SSN = ssn;
             Name = name;
             Email = email;
 

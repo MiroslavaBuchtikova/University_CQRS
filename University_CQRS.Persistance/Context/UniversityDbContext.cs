@@ -9,6 +9,7 @@ namespace University_CQRS.Persistance.Context
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Enrollment> Enrollments { get; set; }
         public virtual DbSet<Disenrollment> Disenrollments { get; set; }
+        public virtual DbSet<ReadStudent> ReadStudents { get; set; }
         public UniversityDbContext(DbContextOptions options) :
             base(options)
         {

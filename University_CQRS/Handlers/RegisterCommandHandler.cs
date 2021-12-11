@@ -20,8 +20,14 @@ namespace University_CQRS.Handlers
 
         public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            var studentExists = _studentRepository.GetBySSN(request.SSN);
+            if(studentExists !=null)
+            {
+                throw new Exception("Student with this SSN already exists");
+            }
             var student = new Student
             {
+                SSN = request.SSN,
                 Name = request.Name,
                 Email = request.Email
             };
