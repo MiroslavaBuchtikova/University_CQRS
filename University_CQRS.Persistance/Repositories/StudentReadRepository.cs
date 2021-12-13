@@ -9,6 +9,15 @@ namespace University_CQRS.Persistance.Repositories
         {
         }
 
+        public Student GetBySSN(string ssn)
+        {
+            return DbContext.Students
+            .Include(x => x.Enrollments)
+            .ThenInclude(x => x.Course)
+            .Include(x => x.Disenrollments)
+            .FirstOrDefault(w => w.SSN == ssn);
+        }
+
         public IReadOnlyList<StudentDto> GetList(string courseName, int? numberOfCourses)
         {
             var students = DbContext.Students.Include(x=>x.Enrollments)
@@ -20,6 +29,7 @@ namespace University_CQRS.Persistance.Repositories
             {
                 var studentDto = new StudentDto()
                 {
+                    Id = student.Id,
                     SSN = student.SSN,
                     Name = student.Name,
                     Email = student.Email

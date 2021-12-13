@@ -10,12 +10,14 @@ namespace University_CQRS.Handlers
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
+        private readonly StudentReadRepository _studentReadRepository;
 
         public RegisterCommandHandler(StudentRepository studentRepository,
-            CourseRepository courseRepository)
+            CourseRepository courseRepository, StudentReadRepository studentReadRepository)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
+            _studentReadRepository = studentReadRepository;
         }
 
         public async Task<ResultDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -24,7 +26,7 @@ namespace University_CQRS.Handlers
             {
                 throw new Exception($"SSN cant't be null");
             }
-            var studentExists = _studentRepository.GetBySSN(request.SSN);
+            var studentExists = _studentReadRepository.GetBySSN(request.SSN);
             if(studentExists !=null)
             {
                 throw new Exception("Student with this SSN already exists");

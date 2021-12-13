@@ -10,17 +10,19 @@ namespace University_CQRS.Handlers
     {
         private readonly StudentRepository _studentRepository;
         private readonly CourseRepository _courseRepository;
+        private readonly StudentReadRepository _studentReadRepository;
 
         public EnrollCommandHandler(StudentRepository studentRepository,
-            CourseRepository courseRepository)
+            CourseRepository courseRepository, StudentReadRepository studentReadRepository)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
+            _studentReadRepository = studentReadRepository;
         }
 
         public async Task<ResultDto> Handle(EnrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetBySSN(request.SSN);;
+            Student student = _studentReadRepository.GetBySSN(request.SSN);;
             if (student == null)
                 throw new Exception($"No student found with SSN {request.SSN}");
 

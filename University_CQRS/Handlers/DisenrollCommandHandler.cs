@@ -9,15 +9,17 @@ namespace University_CQRS.Handlers
     public class DisenrollCommandHandler : IRequestHandler<DisenrollCommand, ResultDto>
     {
         private readonly StudentRepository _studentRepository;
+        private readonly StudentReadRepository _studentReadRepository;
 
-        public DisenrollCommandHandler(StudentRepository studentRepository)
+        public DisenrollCommandHandler(StudentRepository studentRepository, StudentReadRepository studentReadRepository)
         {
             _studentRepository = studentRepository;
+            _studentReadRepository = studentReadRepository;
         }
 
         public async Task<ResultDto> Handle(DisenrollCommand request, CancellationToken cancellationToken)
         {
-            Student student = _studentRepository.GetBySSN(request.SSN);;
+            Student student = _studentReadRepository.GetBySSN(request.SSN);;
             if (student == null)
                 throw new Exception($"No student found for SSN {request.SSN}");
 
