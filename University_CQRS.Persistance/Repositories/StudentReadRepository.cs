@@ -9,41 +9,40 @@ namespace University_CQRS.Persistance.Repositories
         {
         }
 
-        public ReadStudent GetBySSN(string ssn)
+        public IReadOnlyList<StudentDto> GetList(string courseName, int? numberOfCourses)
         {
-            return DbContext.ReadStudents
-            .FirstOrDefault(w => w.SSN == ssn);
-        }
-
-        public IReadOnlyList<ReadStudent> GetList(string courseName, int? numberOfCourses)
-        {
-            var result = DbContext.ReadStudents
+            var students = DbContext.Students.Include(x=>x.Enrollments)
+                .ThenInclude(x=>x.Course)
+                .Include(x=>x.Disenrollments)
             .ToList();
-
-            if (!string.IsNullOrWhiteSpace(courseName))
+            var studentsDto = new List<StudentDto>();
+            foreach (var student in students)
             {
-                result = result.Where(x => x.Course1 == courseName || x.Course2 == courseName).ToList();
+                var studentDto = new StudentDto()
+                {
+                    SSN = student.SSN,
+                    Name = student.Name,
+                    Email = student.Email
+                };
+                if (student.Enrollments?.Count > 0)
+                {
+                    studentDto.Course1 = student.Enrollments?[0]?.Course?.Name;
+                    studentDto.Course1Grade = student.Enrollments?[0]?.Grade.ToString();
+                    studentDto.Course1Credits = student.Enrollments?[0]?.Course?.Credits;
+                }
+                if (student.Enrollments?.Count > 1)
+                {
+
+                    studentDto.Course2 = student.Enrollments?[1]?.Course?.Name;
+                    studentDto.Course2Grade = student.Enrollments?[1]?.Grade.ToString();
+                    studentDto.Course2Credits = student.Enrollments?[1]?.Course?.Credits;
+                }
+
+                studentsDto.Add(studentDto);
             }
+           
 
-            if (numberOfCourses != null)
-            {
-                result = result.Where(x => x.NumberOfCourses == numberOfCourses).ToList();
-            }
-
-
-            return result;
-        }
-
-        public void Save(ReadStudent student)
-        {
-            DbContext.ReadStudents.Update(student);
-            DbContext.SaveChanges();
-        }
-
-        public void Delete(ReadStudent student)
-        {
-            DbContext.ReadStudents.Remove(student);
-            DbContext.SaveChanges();
+            return studentsDto;
         }
     }
 }
